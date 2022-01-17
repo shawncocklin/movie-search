@@ -7,19 +7,25 @@ if(process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
+const bodyParser = require('body-parser')
 
 const PORT = 3000
 const indexRouter = require('./routes/index')
+const genreRouter = require('./routes/genres')
+
 
 // set routes for views
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
 
-// tells app what layouts to use and set the root router
+
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use('/', indexRouter)
+app.use('/genres', genreRouter)
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+
 
 // connecting app to mongoDb database
 const mongoose = require('mongoose')
